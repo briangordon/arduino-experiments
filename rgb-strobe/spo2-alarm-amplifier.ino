@@ -7,6 +7,9 @@ int buzzerControlPin = 4;
 // Controls the high(er) voltage relay connected to the LED array.
 int ledRelayPin = 5;
 
+// Enables and disables the alarm.
+int enableSwitchPin = 11;
+
 // The time that we started alarming, or 0 if we're not alarming.
 unsigned long alarmStartedMillis = 0;
 
@@ -14,6 +17,7 @@ void setup() {
 	pinMode(alarmPin, INPUT);
 	pinMode(ledRelayPin, OUTPUT);
 	pinMode(buzzerControlPin, OUTPUT);
+	pinMode(enableSwitchPin, INPUT);
 
 	digitalWrite(ledRelayPin, LOW);
 	digitalWrite(buzzerControlPin, LOW);
@@ -21,8 +25,9 @@ void setup() {
 
 void loop() {
 	int alarmGoingOff = digitalRead(alarmPin);
+	int alarmEnabled = digitalRead(enableSwitchPin);
 
-	if (!alarmGoingOff) {
+	if (!alarmGoingOff || !alarmEnabled) {
 		alarmStartedMillis = 0;
 		digitalWrite(ledRelayPin, LOW);
 		digitalWrite(buzzerControlPin, LOW);
